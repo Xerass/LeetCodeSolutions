@@ -4,23 +4,17 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
-        #utilize a stack structure
+        match = {')': '(', ']': '[', '}': '{'}
+        openings = set(match.values())
         stack = []
 
-        bracket_map = {')': '(', '}': '{', ']': '['}
-
-        for char in s:
-            if char in bracket_map:
-                #pop it from stack if not empty, else give #
-                top_element = stack.pop() if stack else '#'
-
-                if bracket_map[char] != top_element:
+        for ch in s:
+            if ch in openings:
+                stack.append(ch)
+            elif ch in match:
+                if not stack or stack[-1] != match[ch]:
                     return False
-            
-            else:
-                #must be an opening bracket
-                stack.append(char)
-
-
-        #valid should have an emptyu stack
+                stack.pop()
+        
         return not stack
+
