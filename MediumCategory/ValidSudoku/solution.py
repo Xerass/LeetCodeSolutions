@@ -4,29 +4,33 @@ class Solution(object):
         :type board: List[List[str]]
         :rtype: bool
         """
+        
+        #utilize a similar bit mask approach to the sudoku solver
+        row_mask = [0] * 9
+        col_mask = [0] * 9
+        box_mask = [0] * 9
 
-        from collections import defaultdict
+        def box_index(r, c):
+            return (r // 3) * 3 + (c // 3)
 
-        rows = defaultdict(set)
-        cols = defaultdict(set)
-        boxes = defaultdict(set)
-
+        #iterate over the board and keep track, if any same appears 
         for r in range(9):
             for c in range(9):
-                val = board[r][c]
-                if val == ".":
+                if board[r][c] == ".":
                     continue
+                ch = board[r][c]
+                # convert char '1'..'9' to bit (1<<0 .. 1<<8)
+                d = ord(ch) - ord('1')     # 0..8
+                bit = 1 << d
+                b = box_index(r, c)
 
-                if val in rows[r]:
-                    return False
-                if val in cols[c]:
-                    return False
-                if val in boxes[(r // 3, c // 3)]:
+                #check if they are already in any of the cells considered
+                if (row_mask[r] & bit) or (col_mask[c] & bit) or (box_mask[b] & bit):
                     return False
 
-                rows[r].add(val)
-                cols[c].add(val)
-                boxes[(r // 3, c // 3)].add(val)
+                #set the bit
+                row_mask[r] |= bit
+                col_mask[c] |= bit
+                box_mask[b] |= bit
 
         return True
-                
