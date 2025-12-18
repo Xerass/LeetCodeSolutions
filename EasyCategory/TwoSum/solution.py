@@ -1,21 +1,18 @@
-class Solution(object):
-    def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
-        #approach with a complement approach
-        num_idx  = {}
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        maps = {} #value and index keys
+        n = len(nums)
 
-        for i, num in enumerate(nums):
-            #iterate over the nums, each num subtract with target
-            complement = target - num
+        #perform a complement check we understand that target - num1 = num2
+        #we know target so just find the num2 given respective nums[i]
+        #if in arr then that must be a solution else search
+        #store complement existence in arr so we no longer need to check numbers over and over
+        for i in range(n):
+            difference  = target - nums[i]
 
-            #if the complement was already in the array then we can stop and return the indices
-            if complement in num_idx:
-                return [num_idx[complement], i]
+            #difference exists in maps must mean it is the solution
+            if difference in maps:
+                return [maps[difference], i]
+
+            maps[nums[i]] = i 
             
-            #if not found store the num as a key along with its index
-            num_idx[num] = i
-
