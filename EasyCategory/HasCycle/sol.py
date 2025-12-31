@@ -6,14 +6,16 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        visited = set()
-        node = head
+        #fast slow approach
+        fast = head
+        slow = head
 
-        while node:
-            if node.next not in visited:
-                node = node.next
-                visited.add(node)
-            else:
+        #fast is our main determiner, if it does not end up being null, then there must be a cycle
+        #since fast moves 2 times as fast, it will eventually meet up with slow
+        while fast:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
                 return True
         
         return False
